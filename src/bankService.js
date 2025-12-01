@@ -5,6 +5,7 @@ const users = [
 ];
 
 const bankService = {
+
     getBalance: (userId) => {
         const user = users.find(u => u.id === userId);
         return user ? user.balance : null;
@@ -16,6 +17,14 @@ const bankService = {
 
         if (!sender || !receiver) {
             throw new Error("Usuário não encontrado");
+        }
+
+        if (typeof amount !== "number" || amount <= 0) {
+            throw new Error("Valor inválido");
+        }
+
+        if (sender.balance < amount) {
+            throw new Error("Saldo insuficiente");
         }
 
         sender.balance -= amount;
@@ -30,3 +39,4 @@ const bankService = {
 };
 
 module.exports = bankService;
+module.exports._users = users; // exportando para resetar nos testes
